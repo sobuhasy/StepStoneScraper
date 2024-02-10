@@ -29,20 +29,19 @@ async def main():
 
     for job in job_listings:
         # Extracts the job title
-        title_element = await job.querySelector('h2.title')
+        title_element = await job.querySelector('h2.title span[itemprop="title"]')
         title = await page.evaluate('(element) => element.textContent', title_element)
 
         # Extracts the company name
-        company_element = await job.querySelector('a.company-link')
+        company_element = await job.querySelector('a.company-link [data-testid="jobDetailsCompanyLink"]')
         company = await page.evaluate('(element) => element.textContent', company_element)
 
         # Extracts the location
-        location_element = await job.querySelector('span.location')
+        location_element = await job.querySelector('span.location [data-testid="jobDetailsLocation"]')
         location = await page.evaluate('(element) => element.textContent', location_element)
 
-        # Extracts the link
-        link_element = await job.querySelector('a.job-link')
-        link = await page.evaluate('(element) => element.href', link_element)
+        # Prints the job title, company name and location
+        print({'Job Title/Stellenbezeichnung:', title, 'Company/Unternehmen:', company, 'Location/Standort:', location})
 
-        # Prints the job title, company name, location, and link
-        print({'Job Title/Stellenbezeichnung:', title, 'Company/Unternehmen:', company, 'Location/Standort:', location, 'Link/Link:', link})
+    if __name__ == '__main__':
+        asyncio.run(main())
