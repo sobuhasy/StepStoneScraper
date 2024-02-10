@@ -21,6 +21,35 @@ async def main():
     await page.click('button[type="submit"]')
 
     # Waits for the search results to be available
+    await page.waitForNavigation()
+
+    job_listings = await page.querySelectorAll('.resultContent')
+    for job in job_listings:
+        # Extracts the job title
+        title_element = await job.querySelector('h2.jobTitle span[title]')
+        title = await page.evaluate('(element) => element.textContent', title_element)
+
+        # Extracts the company name
+        company_element = await job.querySelector('div.company_location[data-testid="company_name"]')
+        company = await page.evaluate('(element) => element.textContent', company_element)
+
+        # Extracts the location
+        location_element = await job.querySelector('div.company_location[data-testid="job_location"]')
+        location = await page.evaluate('(element) => element.textContent', location_element)
+
+        # Prints the job title, company name and location
+        print({'Job Title/Stellenbezeichnung:', title, 'Company/Unternehmen:', company, 'Location/Standort:', location})
+
+    # Closes the browser
+    await browser.close()
+
+# Runs the main function
+if __name__ == '__main__':
+    asyncio.run(main())
+
+
+"""
+    # Waits for the search results to be available
     await page.waitForSelector('.job-element')
 
     # Extracts the search results
@@ -40,5 +69,6 @@ async def main():
     # Closes the browser
     await browser.close()
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     asyncio.get_event_loop().run_until_complete(main())
+"""
