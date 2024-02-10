@@ -37,8 +37,12 @@ async def main():
         location_element = await job.querySelector('div.company_location[data-testid="job_location"]')
         location = await page.evaluate('(element) => element.textContent', location_element)
 
+        # Extracts the link
+        link_element = await job.querySelector('a[data-testid="job-link"]')
+        link = await page.evaluate('(element) => element.href, link_element')
+
         # Prints the job title, company name and location
-        print({'Job Title/Stellenbezeichnung:', title, 'Company/Unternehmen:', company, 'Location/Standort:', location})
+        print({'Job Title/Stellenbezeichnung:', title, 'Company/Unternehmen:', company, 'Location/Standort:', location, 'Link/Link:', link})
 
     # Closes the browser
     await browser.close()
